@@ -3,7 +3,7 @@ package dao;
 import modelo.CD;
 import modelo.Disco;
 import modelo.Vinilo;
-
+import java.sql.Types;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class DiscoDAOMySQL implements DiscoDAO {
             "SELECT * FROM discos WHERE usuario_id = ? " +
                     "AND (? IS NULL OR tipo = ?) " +
                     "AND (? IS NULL OR categoria = ?) " +
-                    "AND (? IS NULL OR artista LIKE ?) " +
+                    "AND (? IS NULL OR artista LIKE CONCAT('%', ?, '%')) " +
                     "AND (? IS NULL OR anio = ?)";
 
     @Override
@@ -127,18 +127,46 @@ public class DiscoDAOMySQL implements DiscoDAO {
         try (Connection con = ConexionDB.obtenerConexion();
              PreparedStatement ps = con.prepareStatement(BUSCAR_AVANZADO)) {
 
+            // Usuario ID (siempre requerido)
             ps.setLong(1, usuarioId);
-            ps.setString(2, tipo);
-            ps.setString(3, tipo);
-            ps.setString(4, categoria);
-            ps.setString(5, categoria);
-            ps.setString(6, artista != null ? "%" + artista + "%" : null);
-            ps.setString(7, artista);
-            ps.setInt(8, anio != null ? anio : 0);
-            ps.setInt(9, anio != null ? anio : 0);
+
+            // Tipo
+            if (tipo == null) {
+                ps.setNull(2, Types.VARCHAR);
+                ps.setNull(3, Types.VARCHAR);
+            } else {
+                ps.setString(2, tipo);
+                ps.setString(3, tipo);
+            }
+
+            // Categoría
+            if (categoria == null) {
+                ps.setNull(4, Types.VARCHAR);
+                ps.setNull(5, Types.VARCHAR);
+            } else {
+                ps.setString(4, categoria);
+                ps.setString(5, categoria);
+            }
+
+            // Artista
+            if (artista == null) {
+                ps.setNull(6, Types.VARCHAR);
+                ps.setNull(7, Types.VARCHAR);
+            } else {
+                ps.setString(6, artista);
+                ps.setString(7, artista);
+            }
+
+            // Año
+            if (anio == null) {
+                ps.setNull(8, Types.INTEGER);
+                ps.setNull(9, Types.INTEGER);
+            } else {
+                ps.setInt(8, anio);
+                ps.setInt(9, anio);
+            }
 
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
                 lista.add(mapearDisco(rs));
             }

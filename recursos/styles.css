@@ -1,0 +1,274 @@
+/* ====================== ESTILOS GENERALES ====================== */
+.root {
+    -fx-background-color: #f5f0e6;
+    -fx-font-family: "Segoe UI", "Georgia", serif;
+    -fx-font-size: 14px;
+}
+
+/* ====================== TÍTULOS ====================== */
+.titulo-app {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+    -fx-alignment: center;
+    -fx-padding: 10 0 20 0;
+    -fx-font-family: "Georgia", serif;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 0);
+}
+
+.titulo-vintage {
+    -fx-font-family: "Georgia", serif;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 0, 0);
+    -fx-padding: 10 0 20 0;
+}
+
+/* ====================== TABLA (CORREGIDA) ====================== */
+.tabla-discos {
+    -fx-background-color: #1a2e4d;
+    -fx-border-color: #d4c8b0;
+    -fx-border-width: 2px;
+    -fx-padding: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 0);
+    -fx-pref-height: 300px; /* Altura mínima */
+}
+
+.tabla-discos .table-row-cell:filled:selected {
+    -fx-background-color: #8a2a2a;
+    -fx-text-fill: white;
+}
+
+.tabla-discos .table-row-cell {
+    -fx-background-color: #1a2e4d;
+    -fx-text-fill: white;
+    -fx-border-color: #3a4e6d;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.tabla-discos .column-header {
+    -fx-background-color: #2a3e5d;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 5 10 5;
+    -fx-border-color: #4a5e7d;
+    -fx-border-width: 0 0 2px 0;
+}
+
+.tabla-discos .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+/* Scrollbar de la tabla */
+.tabla-discos .scroll-bar .thumb {
+    -fx-background-color: #c93c3c;
+    -fx-background-radius: 4px;
+}
+
+.tabla-discos .scroll-bar .track {
+    -fx-background-color: #3a4e6d;
+    -fx-background-radius: 4px;
+}
+
+/* ====================== FILTROS AVANZADOS ====================== */
+.seccion-filtros {
+    -fx-padding: 12;
+    -fx-spacing: 12;
+    -fx-background-color: #f0f5fa;
+    -fx-background-radius: 8;
+    -fx-border-color: #c5d4e6;
+    -fx-border-width: 1px;
+    -fx-alignment: center-left;
+}
+
+/* Campos en filtros */
+.seccion-filtros .campo-texto {
+    -fx-pref-width: 120;
+}
+
+/* Etiquetas en filtros */
+.seccion-filtros .etiqueta {
+    -fx-padding: 0 5 0 0;
+}
+
+/* ====================== BOTONES ====================== */
+.boton-primario {
+    -fx-background-color: #c93c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-pref-width: 110;
+    -fx-pref-height: 32;
+    -fx-font-size: 13px;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.boton-primario:hover {
+    -fx-background-color: #a32f2f;
+}
+
+.boton-secundario {
+    -fx-background-color: #1a2e4d;
+    -fx-text-fill: white;
+    -fx-pref-width: 110;
+    -fx-pref-height: 32;
+    -fx-font-size: 13px;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.boton-secundario:hover {
+    -fx-background-color: #2a3e5d;
+}
+
+/* ====================== CAMPOS DE TEXTO ====================== */
+.campo-texto {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1a1a1a;
+    -fx-border-color: #d4c8b0;
+    -fx-border-width: 1px;
+    -fx-pref-width: 220;
+    -fx-pref-height: 30px;
+    -fx-padding: 5 10 5 10;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-font-size: 14px;
+}
+
+.campo-texto:focused {
+    -fx-border-color: #c93c3c;
+    -fx-border-width: 2px;
+}
+
+/* ====================== ETIQUETAS ====================== */
+.etiqueta {
+    -fx-text-fill: #555555;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 5 0;
+}
+
+/* ====================== BARRA DE ESTADO ====================== */
+.barra-estado {
+    -fx-text-fill: #c93c3c;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 8 0 0 0;
+    -fx-alignment: center;
+}
+
+/* ====================== ESTILOS PARA LOGIN ====================== */
+.ventana-login {
+    -fx-background-color: #f5f0e6;
+    -fx-padding: 30;
+    -fx-spacing: 15;
+    -fx-alignment: center;
+}
+
+.titulo-login {
+    -fx-font-family: "Georgia", serif;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 0);
+    -fx-padding: 0 0 25 0;
+}
+
+.campo-login {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1a1a1a;
+    -fx-border-color: #d4c8b0;
+    -fx-border-width: 1px;
+    -fx-pref-width: 280;
+    -fx-pref-height: 35px;
+    -fx-padding: 5 10 5 10;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-size: 15px;
+}
+
+.campo-login:focused {
+    -fx-border-color: #c93c3c;
+    -fx-border-width: 2px;
+}
+
+.boton-login {
+    -fx-background-color: #c93c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-pref-width: 180;
+    -fx-pref-height: 40;
+    -fx-font-size: 16px;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0, 0, 0);
+}
+
+.boton-login:hover {
+    -fx-background-color: #a32f2f;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 6, 0, 0, 0);
+}
+
+.boton-registro {
+    -fx-background-color: #1a2e4d;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-pref-width: 180;
+    -fx-pref-height: 40;
+    -fx-font-size: 16px;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0, 0, 0);
+}
+
+.boton-registro:hover {
+    -fx-background-color: #2a3e5d;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 6, 0, 0, 0);
+}
+
+.error-login {
+    -fx-text-fill: #c93c3c;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-alignment: center;
+    -fx-padding: 15 0 0 0;
+}
+
+/* ====================== CONTENEDORES ====================== */
+.contenedor-principal {
+    -fx-padding: 25;
+    -fx-spacing: 20;
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 0);
+}
+
+.seccion-formulario {
+    -fx-padding: 15;
+    -fx-spacing: 12;
+    -fx-background-color: #f8f6f2;
+    -fx-background-radius: 8;
+    -fx-border-color: #e0d8c8;
+    -fx-border-width: 1px;
+}
+
+.seccion-filtros {
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-background-color: #f0f5fa;
+    -fx-background-radius: 8;
+    -fx-border-color: #c5d4e6;
+    -fx-border-width: 1px;
+}
+/* Filtros responsivos */
+.seccion-filtros {
+    -fx-padding: 12;
+    -fx-spacing: 12;
+    -fx-background-color: #f0f5fa;
+    -fx-background-radius: 8;
+    -fx-border-color: #c5d4e6;
+    -fx-border-width: 1px;
+}

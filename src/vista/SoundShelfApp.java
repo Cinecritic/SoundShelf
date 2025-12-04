@@ -1,5 +1,8 @@
 package vista;
 
+import javafx.geometry.Pos;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import controlador.InventarioControlador;
 import modelo.CD;
 import modelo.Disco;
@@ -12,9 +15,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class SoundShelfApp extends Application {
@@ -44,28 +47,18 @@ public class SoundShelfApp extends Application {
         GridPane formulario = crearFormulario();
         HBox filtros = crearFiltros();
 
-        HBox botones = new HBox(10);
+        // BOTONES FUNCIONALES
         Button btnAgregar = new Button("Agregar");
         Button btnActualizar = new Button("Actualizar");
         Button btnEliminar = new Button("Eliminar");
         Button btnBuscar = new Button("Buscar");
         Button btnLimpiar = new Button("Limpiar");
-        botones.getChildren().addAll(btnAgregar, btnActualizar, btnEliminar, btnBuscar, btnLimpiar);
 
-        lblEstado = new Label();
-
-        VBox raiz = new VBox(10);
-        raiz.setPadding(new Insets(10));
-        raiz.getChildren().addAll(
-                new Label("SoundShelf – Gestor de Discos"),
-                tablaDiscos,
-                new Label("Formulario de Discos"),
-                formulario,
-                new Label("Filtros Avanzados"),
-                filtros,
-                botones,
-                lblEstado
-        );
+        btnAgregar.getStyleClass().add("boton-primario");
+        btnActualizar.getStyleClass().add("boton-primario");
+        btnEliminar.getStyleClass().add("boton-primario");
+        btnBuscar.getStyleClass().add("boton-secundario");
+        btnLimpiar.getStyleClass().add("boton-secundario");
 
         btnAgregar.setOnAction(e -> agregarDisco());
         btnActualizar.setOnAction(e -> actualizarDisco());
@@ -76,45 +69,119 @@ public class SoundShelfApp extends Application {
             recargarTabla();
         });
 
-        recargarTabla();
+        lblEstado = new Label();
+        lblEstado.getStyleClass().add("barra-estado");
 
-        Scene escena = new Scene(raiz, 900, 700);
-        // SIN CSS, SIN LOGO
+        // ==== LAYOUT PRINCIPAL CON SCROLL ====
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        VBox raiz = new VBox(25);
+        raiz.getStyleClass().add("contenedor-principal");
+        raiz.setPadding(new Insets(25));
+        raiz.setAlignment(Pos.TOP_CENTER);
+
+        // LOGO + TÍTULO
+        HBox tituloContainer = new HBox(15);
+        tituloContainer.setAlignment(Pos.CENTER_LEFT);
+
+        try {
+            ImageView logo = new ImageView(new Image(getClass().getResource("/logo.png").toExternalForm()));
+            logo.setFitHeight(60);
+            logo.setPreserveRatio(true);
+            tituloContainer.getChildren().add(logo);
+        } catch (Exception e) {
+            System.out.println("Logo no cargado");
+        }
+
+        Label titulo = new Label("SoundShelf – Gestor de Discos");
+        titulo.getStyleClass().add("titulo-vintage");
+        tituloContainer.getChildren().add(titulo);
+
+        // AÑADIR TODOS LOS ELEMENTOS
+        raiz.getChildren().addAll(
+                tituloContainer,
+                tablaDiscos,
+                new Label("Formulario de Discos") {{ getStyleClass().add("etiqueta"); }},
+                formulario,
+                new Label("Filtros Avanzados") {{ getStyleClass().add("etiqueta"); }},
+                filtros,
+                new HBox(15, btnAgregar, btnActualizar, btnEliminar, btnBuscar, btnLimpiar) {{
+                    setAlignment(Pos.CENTER);
+                }},
+                lblEstado
+        );
+
+        // CONFIGURACIÓN DE LA TABLA
+        tablaDiscos.setPrefHeight(300);
+        tablaDiscos.setMinHeight(200);
+
+        // APLICAR LAYOUT
+        scrollPane.setContent(raiz);
+        Scene escena = new Scene(scrollPane, 950, 750);
+        escena.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         escenario.setScene(escena);
         escenario.show();
+
+        recargarTabla();
     }
 
+
     private void configurarTabla() {
+        // Columna ID
         TableColumn<Disco, Long> colId = new TableColumn<>("ID");
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colId.setPrefWidth(60);
 
+        // Columna Tipo
         TableColumn<Disco, String> colTipo = new TableColumn<>("Tipo");
         colTipo.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getTipo()));
+        colTipo.setPrefWidth(90);
 
+        // Columna Título
         TableColumn<Disco, String> colTitulo = new TableColumn<>("Título");
         colTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
+        colTitulo.setPrefWidth(180);
 
+        // Columna Artista
         TableColumn<Disco, String> colArtista = new TableColumn<>("Artista");
         colArtista.setCellValueFactory(new PropertyValueFactory<>("artista"));
+        colArtista.setPrefWidth(150);
 
+        // Columna Categoría
         TableColumn<Disco, String> colCategoria = new TableColumn<>("Categoría");
         colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+        colCategoria.setPrefWidth(120);
 
+        // Columna Año
         TableColumn<Disco, Integer> colAnio = new TableColumn<>("Año");
         colAnio.setCellValueFactory(new PropertyValueFactory<>("anio"));
+        colAnio.setPrefWidth(70);
 
+        // Columna Cantidad
         TableColumn<Disco, Integer> colCantidad = new TableColumn<>("Cantidad");
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+        colCantidad.setPrefWidth(80);
 
+        // Configuración final
         tablaDiscos.getColumns().addAll(colId, colTipo, colTitulo, colArtista, colCategoria, colAnio, colCantidad);
         tablaDiscos.setItems(listaDiscos);
+        tablaDiscos.setPrefHeight(300);
+        tablaDiscos.setMinHeight(200);
+        tablaDiscos.setPlaceholder(new Label("No hay discos en el inventario"));
+
+        // ¡Scrollbar automático cuando hay muchos datos!
+        tablaDiscos.setTableMenuButtonVisible(true);
     }
 
     private GridPane crearFormulario() {
         GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(5);
-        grid.setPadding(new Insets(10));
+        grid.getStyleClass().add("seccion-formulario");
+        grid.setHgap(15);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(15));
 
         txtTitulo = new TextField();
         txtArtista = new TextField();
@@ -124,17 +191,36 @@ public class SoundShelfApp extends Application {
         comboTipo = new ComboBox<>();
         comboTipo.getItems().addAll("CD", "Vinilo");
 
-        grid.add(new Label("Tipo:"), 0, 0);
+        txtTitulo.getStyleClass().add("campo-texto");
+        txtArtista.getStyleClass().add("campo-texto");
+        txtCategoria.getStyleClass().add("campo-texto");
+        txtAnio.getStyleClass().add("campo-texto");
+        txtCantidad.getStyleClass().add("campo-texto");
+
+        Label lblTipo = new Label("Tipo:");
+        lblTipo.getStyleClass().add("etiqueta");
+        Label lblTitulo = new Label("Título:");
+        lblTitulo.getStyleClass().add("etiqueta");
+        Label lblArtista = new Label("Artista:");
+        lblArtista.getStyleClass().add("etiqueta");
+        Label lblCategoria = new Label("Categoría:");
+        lblCategoria.getStyleClass().add("etiqueta");
+        Label lblAnio = new Label("Año:");
+        lblAnio.getStyleClass().add("etiqueta");
+        Label lblCantidad = new Label("Cantidad:");
+        lblCantidad.getStyleClass().add("etiqueta");
+
+        grid.add(lblTipo, 0, 0);
         grid.add(comboTipo, 1, 0);
-        grid.add(new Label("Título:"), 0, 1);
+        grid.add(lblTitulo, 0, 1);
         grid.add(txtTitulo, 1, 1);
-        grid.add(new Label("Artista:"), 0, 2);
+        grid.add(lblArtista, 0, 2);
         grid.add(txtArtista, 1, 2);
-        grid.add(new Label("Categoría:"), 0, 3);
+        grid.add(lblCategoria, 0, 3);
         grid.add(txtCategoria, 1, 3);
-        grid.add(new Label("Año:"), 0, 4);
+        grid.add(lblAnio, 0, 4);
         grid.add(txtAnio, 1, 4);
-        grid.add(new Label("Cantidad:"), 0, 5);
+        grid.add(lblCantidad, 0, 5);
         grid.add(txtCantidad, 1, 5);
 
         return grid;
@@ -142,31 +228,54 @@ public class SoundShelfApp extends Application {
 
     private HBox crearFiltros() {
         HBox box = new HBox(10);
-        box.setPadding(new Insets(5));
+        box.getStyleClass().add("seccion-filtros");
+        box.setPadding(new Insets(10));
+        box.setAlignment(Pos.CENTER_LEFT);
+        box.setSpacing(15);
 
+        // Tipo
+        Label lblTipo = new Label("Tipo:");
+        lblTipo.getStyleClass().add("etiqueta");
         comboTipoFiltro = new ComboBox<>();
         comboTipoFiltro.getItems().addAll("Todos", "CD", "Vinilo");
         comboTipoFiltro.setValue("Todos");
+        comboTipoFiltro.getStyleClass().add("campo-texto");
+        comboTipoFiltro.setPrefWidth(120);
 
+        // Categoría
+        Label lblCategoria = new Label("Categoría:");
+        lblCategoria.getStyleClass().add("etiqueta");
         comboCategoriaFiltro = new ComboBox<>();
         comboCategoriaFiltro.getItems().addAll(
                 "Todos", "Rock", "Pop", "Jazz", "Folk", "Hip Hop", "R&B",
                 "Electronic", "Classical", "Reggae", "Latin", "Grunge", "Alternative"
         );
         comboCategoriaFiltro.setValue("Todos");
+        comboCategoriaFiltro.getStyleClass().add("campo-texto");
+        comboCategoriaFiltro.setPrefWidth(150);
 
+        // Artista
+        Label lblArtista = new Label("Artista:");
+        lblArtista.getStyleClass().add("etiqueta");
         txtArtistaFiltro = new TextField();
-        txtAnioFiltro = new TextField();
+        txtArtistaFiltro.getStyleClass().add("campo-texto");
+        txtArtistaFiltro.setPromptText("Artista...");
+        txtArtistaFiltro.setPrefWidth(180);
 
+        // Año
+        Label lblAnio = new Label("Año:");
+        lblAnio.getStyleClass().add("etiqueta");
+        txtAnioFiltro = new TextField();
+        txtAnioFiltro.getStyleClass().add("campo-texto");
+        txtAnioFiltro.setPromptText("Año");
+        txtAnioFiltro.setPrefWidth(100);
+
+        // Añadir al contenedor
         box.getChildren().addAll(
-                new Label("Tipo:"),
-                comboTipoFiltro,
-                new Label("Categoría:"),
-                comboCategoriaFiltro,
-                new Label("Artista:"),
-                txtArtistaFiltro,
-                new Label("Año:"),
-                txtAnioFiltro
+                lblTipo, comboTipoFiltro,
+                lblCategoria, comboCategoriaFiltro,
+                lblArtista, txtArtistaFiltro,
+                lblAnio, txtAnioFiltro
         );
 
         return box;
@@ -259,12 +368,8 @@ public class SoundShelfApp extends Application {
     }
 
     private void buscarAvanzado() {
-        String tipo = comboTipoFiltro.getValue();
-        if ("Todos".equals(tipo)) tipo = null;
-
-        String categoria = comboCategoriaFiltro.getValue();
-        if ("Todos".equals(categoria)) categoria = null;
-
+        String tipo = "Todos".equals(comboTipoFiltro.getValue()) ? null : comboTipoFiltro.getValue();
+        String categoria = "Todos".equals(comboCategoriaFiltro.getValue()) ? null : comboCategoriaFiltro.getValue();
         String artista = txtArtistaFiltro.getText().trim();
         if (artista.isEmpty()) artista = null;
 
